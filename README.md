@@ -6,6 +6,8 @@ Inspired by: https://github.com/lthr/github-gallery
 
 ## Using this Repository
 
+Requires Python 3 and a suitable selenium webdriver (Installation instructions below). Instructions assume OS X and tested on Sierra, but should work on most setups.
+
 ### Setup
 
 *For all of the following commands, replace `USERNAME` with your own username*
@@ -32,7 +34,7 @@ Finally, make sure `~/.local/bin` is in your path:
 
 #### Installing PhantomJS
 
-Alternatively, you can download PhantomJS and run the included ghostdriver instead. It's on npm which makes the install easier, but it currently lacks support for many es6 features (this should be significantly better in PhantomJS 2.5 which is currently in Beta).
+Alternatively, you can download PhantomJS and use the included ghostdriver instead. It's on npm which makes the install easier, but it currently lacks support for many es6 features (this should be significantly better in PhantomJS 2.5 which is currently in Beta).
 
     sudo npm install -g phantomjs-prebuilt
 
@@ -42,11 +44,11 @@ Alternatively, you can download PhantomJS and run the included ghostdriver inste
 
 2. Change the repositories in `repositories.yml` to your own selections. `screenshot_target` is optional for each.
 
-### Generating Screenshots & Repo Data (Requires Python 3 and geckodriver)
+### Generating Screenshots & Repo Data
 
     python generate_screenshots.py
 
-This script uses selenium's python bindings and the Firefox geckodriver (or PhantomJS ghostdriver) to grab screenshots from the website listed on each repository (unless otherwise specified). Also grabs all publicly available repo data about each repository, which is stored in `_data/repo_data.yml` and is accessible in your jekyll layout as an array with `site.data.repo_data`. If you want to run with PhantomJS, this can easily be done with the `--phantomjs` command line flag.
+This script uses selenium's python bindings and the Firefox geckodriver (or PhantomJS ghostdriver) to capture screenshots from the project website listed on each repository (unless otherwise specified). It also grabs all publicly available repo data about each repository, which is stored in `_data/repo_data.yml` and is accessible in your jekyll templates as an array under `site.data.repo_data`. If you want to run with PhantomJS, this can easily be done with the `--phantomjs` command line flag.
 
 ### Deployment
 
