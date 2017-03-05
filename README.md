@@ -30,6 +30,12 @@ Finally, make sure `~/.local/bin` is in your path:
 
     echo "export PATH=\"~/.local/bin:\$PATH\"" >> ~/.bash_profile
 
+#### Installing PhantomJS
+
+Alternatively, you can download PhantomJS and run the included ghostdriver instead. It's on npm which makes the install easier, but it currently lacks support for many es6 features (this should be significantly better in PhantomJS 2.5 which is currently in Beta).
+
+    sudo npm install -g phantomjs-prebuilt
+
 #### Update Configuration
 
 1. In `_config.yml`, change `title` to match the new name of your new repository/directory
@@ -40,7 +46,7 @@ Finally, make sure `~/.local/bin` is in your path:
 
     python generate_screenshots.py
 
-This script uses selenium's python bindings and the Firefox geckodriver to grab screenshots from the website listed on each repository (unless otherwise specified). Also grabs all publicly available repo data about each repository, which is stored in `_data/repo_data.yml` and is accessible in your jekyll layout as an array with `site.data.repo_data`
+This script uses selenium's python bindings and the Firefox geckodriver (or PhantomJS ghostdriver) to grab screenshots from the website listed on each repository (unless otherwise specified). Also grabs all publicly available repo data about each repository, which is stored in `_data/repo_data.yml` and is accessible in your jekyll layout as an array with `site.data.repo_data`. If you want to run with PhantomJS, this can easily be done with the `--phantomjs` command line flag.
 
 ### Deployment
 
