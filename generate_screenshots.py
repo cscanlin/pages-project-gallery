@@ -76,9 +76,9 @@ class Screenshotter(object):
         self.driver.quit()
 
     @classmethod
-    def from_file(cls, filename='repositories.yml'):
+    def from_file(cls, filename='repositories.yml', **kwargs):
         with open(filename) as f:
-            return cls([Repository.retrieve_from_url(**item) for item in yaml.load(f)])
+            return cls([Repository.retrieve_from_url(**item) for item in yaml.load(f)], **kwargs)
 
     @staticmethod
     def get_screenshot_dir_from_config():
