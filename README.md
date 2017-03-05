@@ -10,7 +10,7 @@ Requires Python 3 and a suitable selenium webdriver (Installation instructions b
 
 ### Setup
 
-*For all of the following commands, replace `USERNAME` with your own username*
+*For all of the following commands, replace `USERNAME` with your own github username*
 
 First create a new repository called `USERNAME.github.io`
 
