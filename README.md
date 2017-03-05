@@ -8,6 +8,8 @@ Inspired by: https://github.com/lthr/github-gallery
 
 ### Setup
 
+*For all of the following commands, replace USERNAME with your own username*
+
 First create a new repo called `USERNAME.github.io`
 
 #### Clone, Rename and Install Requirements
@@ -19,8 +21,7 @@ First create a new repo called `USERNAME.github.io`
 
 #### Installing geckodriver
 
-Download geckodriver from here: https://github.com/mozilla/geckodriver/releases
-Then unzip, move it to `~/.local/bin` and make sure it's in your path:
+Download geckodriver from here: https://github.com/mozilla/geckodriver/releases. Then unzip, move it to `~/.local/bin` and make sure it's in your path:
 
     tar -zxf ~/Downloads/geckodriver-v0.14.0-macos.tar.gz
     mv geckodriver ~/.local/bin/geckodriver
