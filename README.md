@@ -6,7 +6,9 @@ Inspired by: https://github.com/lthr/github-gallery
 
 ## Using this Repository
 
-Requires Python 3 and a suitable selenium webdriver (Installation instructions below). Instructions assume OS X and tested on Sierra, but should work on most setups.
+Requires Python 3 and a suitable selenium webdriver (Installation instructions below). Building and running the page locally requires Ruby and Jekyll.
+
+Instructions below assume OS X and tested on Sierra, but should work on most setups.
 
 ### Setup
 
@@ -34,7 +36,7 @@ Finally, make sure `~/.local/bin` is in your path:
 
 #### Installing PhantomJS
 
-Alternatively, you can download PhantomJS and use the included ghostdriver instead. It's on npm which makes the install easier, but it currently lacks support for many es6 features (this should be significantly better in PhantomJS 2.5 which is currently in Beta).
+Alternatively, you can download PhantomJS and use the included ghostdriver instead. It's on npm which makes the install easier, but it currently lacks support for many es6 features which can make the screenshots render incorrectly (this should be significantly better in PhantomJS 2.5 which is currently in Beta as of 2016-03-05).
 
     sudo npm install -g phantomjs-prebuilt
 
@@ -60,6 +62,15 @@ Then simply push to your master branch on github:
 
     git push origin master
 
-#### Running Your Pages Site Locally (Requires Ruby)
+#### Running Your Pages Site Locally (Requires Ruby 2.1.0+)
 
-https://help.github.com/articles/setting-up-your-github-pages-site-locally-with-jekyll/
+Make sure bundler is installed, then install Jekyll and other dependencies from the GitHub Pages gem:
+
+    gem install bundler
+    bundle install
+
+Then the following command will build and run your site locally at http://127.0.0.1:4000/:
+
+    bundle exec jekyll serve
+
+See more: https://help.github.com/articles/setting-up-your-github-pages-site-locally-with-jekyll/
