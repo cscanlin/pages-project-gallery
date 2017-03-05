@@ -1,0 +1,10 @@
+# Replace these repositories with your own. `screenshot_target` is optional
+
+- repo_url: https://github.com/cscanlin/munger-builder
+  screenshot_target: http://www.mungerbuilder.com/script_builder/pivot_builder/1  # (optional)
+
+- repo_url: https://github.com/cscanlin/choice-optimizer
+
+- repo_url: https://github.com/cscanlin/minesweeper
+
+- repo_url: https://github.com/cscanlin/periodic-table-timeline

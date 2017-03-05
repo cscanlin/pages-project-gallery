@@ -1,0 +1,4 @@
+requests
+yaml
+selenium
+__main__
