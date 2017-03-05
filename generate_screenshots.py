@@ -5,11 +5,9 @@ import yaml
 from datetime import datetime
 from selenium import webdriver
 from urllib.parse import urlparse
-import __main__
 
 THIS_DIR = os.path.dirname(os.path.realpath(__file__))
-
-default_logger = logging.getLogger(__main__.__file__)
+default_logger = logging.getLogger(__file__)
 
 def get_log_handler():
     formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
@@ -33,14 +31,17 @@ class Repository(object):
         repo_data = requests.get(api_path).json()
         return cls(repo_data, screenshot_target)
 
-    @staticmethod
-    def parse_data_from_url(repo_url):
+    @classmethod
+    def parse_data_from_url(cls, repo_url, screenshot_target=None):
         repo_data = {
-            'name': repo_url.split('/')[-1],
+            'name': repo_url.rstrip('/').split('/')[-1],
             'html_url': repo_url,
         }
         repo_data['homepage'] = 'https://cscanlin.github.io/{}'.format(repo_data['name'])
-        return repo_data
+        return cls(repo_data, screenshot_target)
+
+    def __str__(self):
+        return self.name
 
 class Screenshotter(object):
     def __init__(self,
@@ -48,9 +49,9 @@ class Screenshotter(object):
                  width=1280,
                  height=800,
                  screenshot_directory=None,
-                 screenshot_format='png',
                  data_dump_directory='_data',
-                 logger=default_logger):
+                 logger=default_logger,
+                 driver_type=webdriver.Firefox):
         self.repositories = repositories
         self.width = width
         self.height = height
@@ -58,16 +59,16 @@ class Screenshotter(object):
             self.screenshot_directory = screenshot_directory
         else:
             self.screenshot_directory = self.get_screenshot_dir_from_config()
-        self.screenshot_format = screenshot_format
         self.data_dump_directory = data_dump_directory
         self.logger = logger
         self.logger.setLevel(logging.INFO)
         self.logger.addHandler(get_log_handler())
         self.driver = None
+        self.driver_type = driver_type
         self.init_time = datetime.utcnow().replace(microsecond=0).isoformat()
 
     def __enter__(self):
-        self.driver = webdriver.Firefox()
+        self.driver = self.driver_type()
         self.driver.set_window_size(self.width, self.height)
         return self
 
@@ -99,11 +100,7 @@ class Screenshotter(object):
         return filename
 
     def screenshot_filename(self, repository):
-        return '{}_{}.{}'.format(
-            repository.name,
-            self.init_time,
-            self.screenshot_format,
-        )
+        return '{}_{}.png'.format(repository.name, self.init_time)
 
     def run(self):
         self.clear_screenshot_directory()
@@ -122,17 +119,3 @@ if __name__ == '__main__':
     with Screenshotter.from_file('repositories.yml') as ss:
         ss.run()
         ss.dump_repo_data()
-
-# Alternatively:
-# repositories = [
-#     Repository.retrieve_from_url(
-#         repo_url='https://github.com/cscanlin/munger-builder',
-#         screenshot_target='http://www.mungerbuilder.com/script_builder/pivot_builder/1',
-#     )
-#     Repository.retrieve_from_url('https://github.com/cscanlin/choice-optimizer')
-#     Repository.retrieve_from_url('https://github.com/cscanlin/minesweeper')
-#     Repository.retrieve_from_url('https://github.com/cscanlin/periodic-table-timeline')
-# ]
-# with Screenshotter(repositories) as ss:
-#     ss.run()
-#     ss.dump_repo_data()
