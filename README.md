@@ -12,19 +12,19 @@ First create a new repo called `USERNAME.github.io`
 
 #### Clone, Rename and Install Requirements
 
-  git clone https://github.com/cscanlin/pages_project_gallery
-  mv pages_project_gallery USERNAME.github.io
-  cd USERNAME.github.io
-  pip install -r requirements.txt
+    git clone https://github.com/cscanlin/pages_project_gallery
+    mv pages_project_gallery USERNAME.github.io
+    cd USERNAME.github.io
+    pip install -r requirements.txt
 
 #### Installing geckodriver
 
 Download geckodriver from here: https://github.com/mozilla/geckodriver/releases
 Then unzip, move it to `~/.local/bin` and make sure it's in your path:
 
-  tar -zxf ~/Downloads/geckodriver-v0.14.0-macos.tar.gz
-  mv geckodriver ~/.local/bin/geckodriver
-  echo "export PATH=\"~/.local/bin:\$PATH\"" >> ~/.bash_profile
+    tar -zxf ~/Downloads/geckodriver-v0.14.0-macos.tar.gz
+    mv geckodriver ~/.local/bin/geckodriver
+    echo "export PATH=\"~/.local/bin:\$PATH\"" >> ~/.bash_profile
 
 #### Update Configuration
 
@@ -34,7 +34,7 @@ Then unzip, move it to `~/.local/bin` and make sure it's in your path:
 
 ### Generating Screenshots & Repo Data (Requires Python 3 and geckodriver)
 
-  python generate_screenshots.py
+    python generate_screenshots.py
 
 This script uses selenium's python bindings and the Firefox geckodriver to grab screenshots from the website listed on each repository (unless otherwise specified). Also grabs all publicly available repo data about each repository which is stored in `_data/repo_data.yml` and is accessible in your jekyll layout as an array with `site.data.repo_data`
 
@@ -42,11 +42,11 @@ This script uses selenium's python bindings and the Firefox geckodriver to grab 
 
 First make sure the remote matches your repo:
 
-  git remote set-url origin https://github.com/USERNAME/USERNAME.github.io.git
+    git remote set-url origin https://github.com/USERNAME/USERNAME.github.io.git
 
 Then simply push to your master branch on github:
 
-  git push origin master
+    git push origin master
 
 #### Running Your Pages Site Locally (Requires Ruby)
 
