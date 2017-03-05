@@ -8,9 +8,9 @@ Inspired by: https://github.com/lthr/github-gallery
 
 ### Setup
 
-*For all of the following commands, replace USERNAME with your own username*
+*For all of the following commands, replace `USERNAME` with your own username*
 
-First create a new repo called `USERNAME.github.io`
+First create a new repository called `USERNAME.github.io`
 
 #### Clone, Rename and Install Requirements
 
@@ -21,23 +21,26 @@ First create a new repo called `USERNAME.github.io`
 
 #### Installing geckodriver
 
-Download geckodriver from here: https://github.com/mozilla/geckodriver/releases. Then unzip, move it to `~/.local/bin` and make sure it's in your path:
+Download geckodriver from here: https://github.com/mozilla/geckodriver/releases. Then unzip it and move the extracted executable to `~/.local/bin`. Here are some sample commands, but this can easily be done from the finder as well:
 
     tar -zxf ~/Downloads/geckodriver-v0.14.0-macos.tar.gz
     mv geckodriver ~/.local/bin/geckodriver
+
+Finally, make sure `~/.local/bin` is in your path:
+
     echo "export PATH=\"~/.local/bin:\$PATH\"" >> ~/.bash_profile
 
 #### Update Configuration
 
-1. In `_config.yml`, change `title` to match the new name of your directory
+1. In `_config.yml`, change `title` to match the new name of your new repository/directory
 
-2. Change the repositories in `repositories.yml` to ones of your choice. `screenshot_target` is optional for each.
+2. Change the repositories in `repositories.yml` to your own selections. `screenshot_target` is optional for each.
 
 ### Generating Screenshots & Repo Data (Requires Python 3 and geckodriver)
 
     python generate_screenshots.py
 
-This script uses selenium's python bindings and the Firefox geckodriver to grab screenshots from the website listed on each repository (unless otherwise specified). Also grabs all publicly available repo data about each repository which is stored in `_data/repo_data.yml` and is accessible in your jekyll layout as an array with `site.data.repo_data`
+This script uses selenium's python bindings and the Firefox geckodriver to grab screenshots from the website listed on each repository (unless otherwise specified). Also grabs all publicly available repo data about each repository, which is stored in `_data/repo_data.yml` and is accessible in your jekyll layout as an array with `site.data.repo_data`
 
 ### Deployment
 
