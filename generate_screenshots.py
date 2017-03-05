@@ -5,6 +5,7 @@ import yaml
 from datetime import datetime
 from selenium import webdriver
 from urllib.parse import urlparse
+import argparse
 
 THIS_DIR = os.path.dirname(os.path.realpath(__file__))
 default_logger = logging.getLogger(__file__)
@@ -116,6 +117,9 @@ class Screenshotter(object):
         self.logger.info('Finsihed Dumping')
 
 if __name__ == '__main__':
-    with Screenshotter.from_file('repositories.yml') as ss:
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--phantomjs', dest='phantomjs', action='store_true')
+    driver_type = webdriver.PhantomJS if parser.parse_args().phantomjs else webdriver.Firefox
+    with Screenshotter.from_file('repositories.yml', driver_type=driver_type) as ss:
         ss.run()
         ss.dump_repo_data()
