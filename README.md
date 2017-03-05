@@ -2,7 +2,7 @@ Easily generate a simple project gallery on github pages from a list of other gi
 
 Live Demo: https://cscanlin.github.io/
 
-Based on: https://github.com/lthr/github-gallery
+Inspired by: https://github.com/lthr/github-gallery
 
 ## Using this Repository
 
@@ -10,7 +10,7 @@ Based on: https://github.com/lthr/github-gallery
 
 First create a new repo called `USERNAME.github.io`
 
-#### Clone and Install Requirements
+#### Clone, Rename and Install Requirements
 
   git clone https://github.com/cscanlin/pages_project_gallery
   mv pages_project_gallery USERNAME.github.io
@@ -26,9 +26,17 @@ Then unzip, move it to `~/.local/bin` and make sure it's in your path:
   mv geckodriver ~/.local/bin/geckodriver
   echo "export PATH=\"~/.local/bin:\$PATH\"" >> ~/.bash_profile
 
+#### Update Configuration
+
+1. In `_config.yml`, change `title` to match the new name of your directory
+
+2. Change the repositories in `repositories.yml` to ones of your choice. `screenshot_target` is optional for each.
+
 ### Generating Screenshots & Repo Data (Requires Python 3 and geckodriver)
 
   python generate_screenshots.py
+
+This script uses selenium's python bindings and the Firefox geckodriver to grab screenshots from the website listed on each repository (unless otherwise specified). Also grabs all publicly available repo data about each repository which is stored in `_data/repo_data.yml` and is accessible in your jekyll layout as an array with `site.data.repo_data`
 
 ### Deployment
 
@@ -40,13 +48,6 @@ Then simply push to your master branch on github:
 
   git push origin master
 
-Simply push right to the master branch
-
-In `_config.yml`, change `title` to match the new name of your directory
-
-Change the repositories in `repositories.yml` to ones of your choice. `screenshot_target` is optional for each.
-
-
-#### To Run Your Pages Site Locally (Requires Ruby)
+#### Running Your Pages Site Locally (Requires Ruby)
 
 https://help.github.com/articles/setting-up-your-github-pages-site-locally-with-jekyll/
