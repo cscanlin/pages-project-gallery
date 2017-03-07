@@ -1,3 +1,14 @@
 title: cscanlin.github.io  # replace 'cscanlin' with your username
 theme: jekyll-theme-slate
-screenshot_directory: /assets/images/screenshots/
+screenshot_directory: ./assets/images/screenshots/
+screenshot_width: 1280
+screenshot_height: 800
+repositories:
+  - repo_url: https://github.com/cscanlin/munger-builder
+    screenshot_target: http://www.mungerbuilder.com/script_builder/pivot_builder/1
+
+  - repo_url: https://github.com/cscanlin/choice-optimizer
+
+  - repo_url: https://github.com/cscanlin/minesweeper
+
+  - repo_url: https://github.com/cscanlin/periodic-table-timeline

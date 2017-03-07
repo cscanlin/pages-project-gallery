@@ -8,7 +8,10 @@ from urllib.parse import urlparse
 import argparse
 
 THIS_DIR = os.path.dirname(os.path.realpath(__file__))
-default_logger = logging.getLogger(__file__)
+DEFAULT_LOGGER = logging.getLogger(__file__)
+
+with open(os.path.join(THIS_DIR, '_config.yml')) as f:
+    CONFIG = yaml.load(f)
 
 def get_log_handler():
     formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
@@ -47,19 +50,16 @@ class Repository(object):
 class Screenshotter(object):
     def __init__(self,
                  repositories,
-                 width=1280,
-                 height=800,
-                 screenshot_directory=None,
+                 width=CONFIG['screenshot_width'],
+                 height=CONFIG['screenshot_height'],
+                 screenshot_directory=CONFIG['screenshot_directory'],
                  data_dump_directory='_data',
-                 logger=default_logger,
+                 logger=DEFAULT_LOGGER,
                  driver_type=webdriver.Firefox):
         self.repositories = repositories
         self.width = width
         self.height = height
-        if screenshot_directory:
-            self.screenshot_directory = screenshot_directory
-        else:
-            self.screenshot_directory = self.get_screenshot_dir_from_config()
+        self.screenshot_directory = screenshot_directory
         self.data_dump_directory = data_dump_directory
         self.logger = logger
         self.logger.setLevel(logging.INFO)
@@ -77,14 +77,9 @@ class Screenshotter(object):
         self.driver.quit()
 
     @classmethod
-    def from_file(cls, filename='repositories.yml', **kwargs):
-        with open(filename) as f:
-            return cls([Repository.retrieve_from_url(**item) for item in yaml.load(f)], **kwargs)
-
-    @staticmethod
-    def get_screenshot_dir_from_config():
-        with open('_config.yml') as f:
-            return os.path.join(THIS_DIR, yaml.load(f)['screenshot_directory'][1:])
+    def from_config(cls, conf=CONFIG, **kwargs):
+        repositories = [Repository.retrieve_from_url(**item) for item in conf['repositories']]
+        return cls(repositories, **kwargs)
 
     def clear_screenshot_directory(self):
         for f in os.listdir(self.screenshot_directory):
@@ -120,6 +115,6 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--phantomjs', dest='phantomjs', action='store_true')
     driver_type = webdriver.PhantomJS if parser.parse_args().phantomjs else webdriver.Firefox
-    with Screenshotter.from_file('repositories.yml', driver_type=driver_type) as ss:
+    with Screenshotter.from_config(driver_type=driver_type) as ss:
         ss.run()
         ss.dump_repo_data()
