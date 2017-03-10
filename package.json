@@ -8,5 +8,7 @@
     "js-yaml": "^3.8.2",
     "nightmare": "^2.10.0"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "eslint": "^3.17.1"
+  }
 }
