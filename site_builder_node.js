@@ -14,20 +14,18 @@ class Repository {
 
   constructor(repo_data, screenshot_target) {
     this.screenshot_target = screenshot_target ? screenshot_target : repo_data.homepage
-    this.screenshot = null
     Object.keys(repo_data).forEach(key => {
       this[key] = repo_data[key]
     })
+    this.screenshot = this.screenshot_filename()
   }
 
   static retrieve_from_url(repo_url, screenshot_target) {
     const full_api_path = `https://api.github.com/repos${url.parse(repo_url).pathname}`
-    return new Promise((resolve, reject) => {
-      fetch(full_api_path).then(response => {
-        return response.json()
-      }).then(repo_data => {
-        resolve(new Repository(repo_data, screenshot_target))
-      }).catch(reject)
+    return fetch(full_api_path).then(response => {
+      return response.json()
+    }).then(repo_data => {
+      return new Repository(repo_data, screenshot_target)
     })
   }
 
@@ -43,6 +41,11 @@ class Repository {
   screenshot_filename() {
     return `${this.name}_${INIT_TIME}.png`
   }
+
+  sorted() {
+    // http://stackoverflow.com/a/29622653/1883900
+    return Object.keys(this).sort().reduce((r, k) => (r[k] = this[k], r), {})
+  }
 }
 
 class Screenshotter {
@@ -54,7 +57,7 @@ class Screenshotter {
     fs.readdir(config.screenshot_directory, (err, file_names) => {
       file_names.forEach(file_name => {
         if (file_name !== '.keep') {
-          fs.unlinkSync(config.screenshot_directory + '/' +file_name)
+          fs.unlinkSync(`${config.screenshot_directory}/${file_name}`)
         }
       })
     })
@@ -62,13 +65,13 @@ class Screenshotter {
 
   capture_screenshots() {
     // https://github.com/rosshinkley/nightmare-examples/blob/master/docs/common-pitfalls/async-operations-loops.md
-    const nightmare = Nightmare({ show: true })
+    const nightmare = Nightmare()
     nightmare.viewport(config.screenshot_width, config.screenshot_height)
     this.repositories.reduce((accumulator, repo) => {
       return accumulator.then(results => {
         return nightmare.goto(repo.screenshot_target)
           .screenshot(`${config.screenshot_directory}/${repo.screenshot_filename()}`)
-          .then(function(result){
+          .then(result => {
             console.log(`Finished: ${repo.name}`)
             results.push(result)
             return results
@@ -82,14 +85,15 @@ class Screenshotter {
   }
 
   dump_repo_data() {
-    fs.writeFileSync('_data/repo_data.yml', yaml.safeDump(this.repositories), 'utf8')
-    console.log('Finsihed Dumping Data')
+    const sorted_repositories = this.repositories.map(repo => repo.sorted())
+    fs.writeFileSync('_data/repo_data.yml', yaml.safeDump(sorted_repositories))
+    console.log('Finished Dumping Data')
   }
 
   run() {
     this.clear_screenshot_directory()
-    this.capture_screenshots()
     this.dump_repo_data()
+    this.capture_screenshots()
   }
 
 }
