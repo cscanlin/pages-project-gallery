@@ -6,7 +6,6 @@ from datetime import datetime
 from selenium import webdriver
 from urllib.parse import urlparse
 import argparse
-
 THIS_DIR = os.path.dirname(os.path.realpath(__file__))
 
 logging.basicConfig(
