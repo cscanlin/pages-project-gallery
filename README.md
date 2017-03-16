@@ -62,11 +62,21 @@ Then the following command will build and run your site locally at http://127.0.
 
 See more: https://help.github.com/articles/setting-up-your-github-pages-site-locally-with-jekyll/
 
+### Shortcuts
+
+The following npm scripts have been added for convenience:
+
+    "scripts": {
+      "run": "bundle exec jekyll serve",
+      "build": "node site_builder_node.js",
+      "deploy": "git push origin master"
+    }
+
 ### Python instructions
 
 #### Installing Python requirements
 
-pip install -r requirements.txt
+    pip install -r requirements.txt
 
 ##### Installing geckodriver
 
