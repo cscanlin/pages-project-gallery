@@ -13,10 +13,14 @@ const config = yaml.safeLoad(fs.readFileSync('./_config.yml', 'utf8'))
 class Repository {
 
   constructor(repo_data, screenshot_target) {
-    this.screenshot_target = screenshot_target ? screenshot_target : repo_data.homepage
     Object.keys(repo_data).forEach(key => {
       this[key] = repo_data[key]
     })
+    if (!repo_data.homepage && !screenshot_target) {
+      throw new Error(`Need screenshot_target or homepage for ${repo_data.name}`)
+    }
+    this.screenshot_target = screenshot_target ? screenshot_target : this.homepage
+    this.homepage = this.homepage ? this.homepage : screenshot_target
     this.screenshot = this.screenshot_filename()
   }
 
@@ -29,7 +33,7 @@ class Repository {
     })
   }
 
-  static parse_data_from_url(repo_url, screenshot_target) {
+  static _parse_data_from_url(repo_url, screenshot_target) {
     const repo_data = {
       name: repo_url.split('/').reverse()[0],
       html_url: repo_url,

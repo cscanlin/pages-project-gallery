@@ -6,6 +6,7 @@ from datetime import datetime
 from selenium import webdriver
 from urllib.parse import urlparse
 import argparse
+
 THIS_DIR = os.path.dirname(os.path.realpath(__file__))
 
 logging.basicConfig(
@@ -20,10 +21,13 @@ class Repository(object):
     REPO_API_PATH = 'https://api.github.com/repos'
 
     def __init__(self, repo_data, screenshot_target=None):
-        self.screenshot_target = screenshot_target if screenshot_target else repo_data['homepage']
-        self.screenshot = None
         for k, v in repo_data.items():
             setattr(self, k, v)
+        if not repo_data['homepage'] and not screenshot_target:
+            raise ValueError('Need screenshot_target or homepage for {}'.format(repo_data['name']))
+        self.screenshot_target = screenshot_target if screenshot_target else self.homepage
+        self.homepage = self.homepage if self.homepage else screenshot_target
+        self.screenshot = None
 
     @classmethod
     def retrieve_from_url(cls, repo_url, screenshot_target=None):
@@ -36,7 +40,7 @@ class Repository(object):
             raise ConnectionError(req.json()['message'])
 
     @classmethod
-    def parse_data_from_url(cls, repo_url, screenshot_target=None):
+    def _parse_data_from_url(cls, repo_url, screenshot_target=None):
         repo_data = {
             'name': repo_url.rstrip('/').split('/')[-1],
             'html_url': repo_url,
