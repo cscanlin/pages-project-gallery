@@ -20,8 +20,8 @@ First create a new repository called `USERNAME.github.io`
 
 #### Clone, Rename and Install Requirements
 
-    git clone https://github.com/cscanlin/pages_project_gallery
-    mv pages_project_gallery USERNAME.github.io
+    git clone https://github.com/cscanlin/pages-project-gallery
+    mv pages-project-gallery USERNAME.github.io
     cd USERNAME.github.io
     npm install
 
